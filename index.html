@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CardChecker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card" id="app" v-bind:style="{ backgroundColor: activeColor }">
+
+        <!-- Здесь будет выводиться ЛОГОТИП БАНКА -->
+        <div class="bank">
+            <img v-bind:src="'img/banks/' + banks + '.png'" v-if="banks">
+        </div>
+
+        <!-- Поле для ввода НОМЕРА КАРТЫ -->
+        <div class="number-container">
+            <input type="text" placeholder="Номер карты" v-model="firstNum"  v-bind:class="{ 'input-ok': isOk, 'input-err': !isOk }">
+            <div v-bind:class="{ status: 'true', 'status-ok': isOk, 'status-err': !isOk }"></div>
+        </div>
+
+        <!-- Поле для ввода ИМЕНИ ДЕРЖАТЕЛЯ -->
+        <div class="name-container">
+            <input type="text" placeholder="Имя держателя" v-model="Name"  v-bind:class="{ 'input-ok': isOk2, 'input-err': !isOk2 }"  v-on:input="name()">
+            <div v-bind:class="{ status: 'true', 'status-ok': isOk2, 'status-err': !isOk2 }"></div>
+        </div>
+
+        <!-- Логотип ПЛАТЕЖНОЙ СИСТЕМЫ -->
+        <div class="pay-system">
+            <img v-bind:src="'img/systems/' + card + '.png'" v-if="card">
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        'use strick';
+            const vm = new Vue({
+                el: '#app',
+                data: {
+                    activeColor: '#eff5f8',
+                    firstNum: "",
+                    isOk: false, 
+                    Name: "",
+                    isOk2: false
+                },
+                methods: {
+                    name: function(){
+                        let symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ';
+                        console.log(this.Name.length)
+                        this.isOk2 = true;
+                        for (let i = 0; i < this.Name.length; i++){
+                            console.log(symbols.indexOf(this.Name[i]))
+                            if (symbols.indexOf(this.Name[i]) == -1){
+                                this.isOk2 = false;
+                            }
+                        }
+                    }
+                },
+                computed: {
+                    card(){
+                        if (this.firstNum.length == 16){
+                            this.isOk = true;
+                        }else{
+                            this.isOk = false;
+                        }
+                        if (this.firstNum[0] == 2){
+                            return "mir";
+                        }
+                        if (this.firstNum[0] == 3){
+                            return "american-exp";
+                        }
+                        if (this.firstNum[0] == 4){
+                            return "visa";
+                        }
+                        if (this.firstNum[0] == 5){
+                            return "mastercard";
+                        }
+                        if (this.firstNum[0] == 6){
+                            return "maestro";
+                        }
+                        
+                        return false;
+                    },
+                    banks(){
+                        switch(this.firstNum.slice(0,6)){
+                            case "521178":
+                            case "548673":
+                            case "548601":
+                            case "415428":
+                            case "676371":
+                            case "477964":
+                            case "479004": 
+                                this.activeColor = "#2f2f2f";
+                                return "alpha"; break
+                            case "427229":
+                            case "527883":
+                            case "447520": 
+                                this.activeColor = "#4769a0";
+                                return "vtb"; break
+                            case "548999":
+                            case "526483": 
+                                this.activeColor = "#0e1546";
+                                return "gazprombank"; break
+                            case "533736":
+                            case "540616": 
+                                this.activeColor = "#24272c";
+                                return "mts-bank"; break
+                            case "434146":
+                            case "405870":
+                            case "544573":
+                            case "532301":
+                                this.activeColor = "#e2e2e2";
+                                return "otkrytie"; break
+                            case "440503":
+                            case "554761":
+                                this.activeColor = "#838383";
+                                return "rosbank"; break
+                            case "513691":
+                            case "510047":
+                                this.activeColor = "#8da864";   
+                                return "russian_standart"; break
+                            case "462730":
+                            case "462729":
+                                this.activeColor = "#d7bf81";
+                                return "raiffaizen"; break
+                            case "427683":
+                            case "427901":
+                            case "427644":
+                            case "427601":
+                            case "427901":
+                            case "427631":
+                            case "427638":
+                            case "546938":
+                                this.activeColor = "#fdfdfd";
+                                return "sberbank"; break
+                            case "521324":
+                            case "437773":
+                                this.activeColor = "#6c6865";
+                                return "tinkoff"; break
+                            default: this.activeColor = "#eff5f8"; return false
+                        }
+                    }
+                }
+            });
+    </script>
+</body>
+</html>
